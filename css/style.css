@@ -1,0 +1,122 @@
+/*html, body {
+  height: 100%;
+  /*position: relative;
+  width: 100%;
+}
+
+.wrapper {
+  min-height: 100%;
+  position: relative;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.wrapp_container {
+  height: 100%;
+  width: 100%;
+}
+
+.content_wrapp {
+  float: left;
+  height: 100%;
+  position: relative;
+  width: 70%;
+}
+
+.side_bar_wrapp {
+  height: 100%;
+  position: relative;
+  width: 29%;
+  float: left;
+}
+
+.mess_modul {
+  width: 100%;
+  height: 100%;
+}
+
+.mess_wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding-bottom: 150px;
+}
+
+.form_wrapper {
+  bottom: 0;
+  height: 150px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}*/
+
+html, body {
+  height: 100%;
+}
+
+.wrapper {
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  width: 1024px;
+}
+
+.wrapp_container {
+  height: 100%;
+  width: 100%;
+}
+
+.content_wrapp {
+  float: left;
+  height: 100%;
+  position: relative;
+  width: 70%;
+}
+
+.mess_modul {
+  height: 100%;
+  width: 100%;
+}
+
+.form_wrapper {
+  bottom: 0;
+  height: 120px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.mess_wrapper {
+  bottom: 120px;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.mess_item.user {
+  background-color: rgba(9, 56, 194, 0.16);
+  border-top: 2px solid #0938c2;
+  box-shadow: 0 0 30px 11px #fff inset;
+  margin-top: 5px;
+}
+
+.mess_item.bot {
+  background-color: rgba(194, 9, 9, 0.16);
+  border-top: 2px solid #c20909;
+  box-shadow: 0 0 30px 11px #fff inset;
+  margin-top: 5px;
+}
+
+.mess_head {
+  position: relative;
+}
+
+.timeSend {
+  position: absolute;
+  right: 2%;
+  width: 60px;
+}
+
