@@ -19,15 +19,14 @@ MessageViewForm = React.createClass
 
 	componentWillMount:->
 		self = @
-		window.StoreMess.listen (mess)->
-			console.log "mess", mess
-			self.setState({message:mess})
+		window.StoreMess.listen (flag)->
+			if flag is "new_mess"
+				self.setState({message:window.StoreMess.onGetMess()})
 			
 
 	viewMessList:(obj)->
 		unless _.isEmpty obj
 			_.map obj, (obj, key)->
-				console.log {key}
 				<li key={key}>
 					<div className="mess_item #{obj.user}" >
 						<div className="mess_head">
@@ -57,8 +56,8 @@ MessageSendForm = React.createClass
 
 	subMess:(e)->
 		e.preventDefault()
-
-		window.ActionsMess.sendMess(@state.mess_field)
+		if @state.mess_field.trim().length > 0
+			window.ActionsMess.sendMess(@state.mess_field)
 		@setState {mess_field:''}
 
 		React.findDOMNode(@refs.messBody).focus()

@@ -23,19 +23,17 @@ MessageViewForm = React.createClass({
   componentWillMount: function() {
     var self;
     self = this;
-    return window.StoreMess.listen(function(mess) {
-      console.log("mess", mess);
-      return self.setState({
-        message: mess
-      });
+    return window.StoreMess.listen(function(flag) {
+      if (flag === "new_mess") {
+        return self.setState({
+          message: window.StoreMess.onGetMess()
+        });
+      }
     });
   },
   viewMessList: function(obj) {
     if (!_.isEmpty(obj)) {
       return _.map(obj, function(obj, key) {
-        console.log({
-          key: key
-        });
         return React.createElement("li", {
           "key": key
         }, React.createElement("div", {
@@ -69,7 +67,9 @@ MessageSendForm = React.createClass({
   },
   subMess: function(e) {
     e.preventDefault();
-    window.ActionsMess.sendMess(this.state.mess_field);
+    if (this.state.mess_field.trim().length > 0) {
+      window.ActionsMess.sendMess(this.state.mess_field);
+    }
     this.setState({
       mess_field: ''
     });
