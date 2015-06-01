@@ -18,19 +18,16 @@ Login = React.createClass
 
 		}
 
-	sendMethod:(url, data)->
+	sendMethod:(url, data, callback)->
 		self = @
 		$.ajax 
 			url:url
 			type:"POST"
 			data:data
 			success:(res, stat)->
-				if res.error is 'no'
-					# windows.location.href = '/chat'
-				else 
-					self.setState({error_mess: res.error_mess})
+				callback(res);
 			error:(res, stat)->
-					self.setState({error_mess: stat})
+				self.setState({error_mess: stat})
 
 	checkLogin:()->
 		if parseFloat(@state.login_field.trim().length) >= 4
@@ -54,25 +51,48 @@ Login = React.createClass
 		@setState({pass_chk: chk, pass_mess:mess})
 		chk
 
-	onSubmit:()->
+	onLogin:(el)->
+		el.preventDefault()
 		@setState({error_mess:''})
 
 		login_chk = @checkLogin()
 		pass_chk = @checkPass()
 
 		if login_chk and pass_chk
-			@sendMethod('/login', {username:@state.login_field, password:@state.pass_field})
+			@sendMethod('/login', {username:@state.login_field, password:@state.pass_field}, (res)=>
+				if res.error is 'no'
+					window.location.href = '/chat'
+				else 
+					self.setState({error_mess: res.error_mess})
+			)
+
+	onLogout:(el)->
+		el.preventDefault()
+		
+		@sendMethod('/logout', {}, (res)=>
+			if res.error is 'no'
+				window.location.href = '/'
+			else 
+				self.setState({error_mess: res.error_mess})
+		)
 
 	render:->
-		<div className="login_wrapper">
-			<div className="error_wrapper"> {@state.error_mess} </div>
-			<form action='#' id="login_form" onSubmit={@onSubmit}>
-				<input type="text" className="input_login" placeholder="login" valueLink={@linkState("login_field")} onBlur={@checkLogin} />
-				<div className="error_wrap_login"> {@state.login_mess} </div>
-				<input type="password" className="pass_login" placeholder="password" valueLink={@linkState("pass_field")} onBlur={@checkPass} />
-				<div className="error_wrap_pass"> {@state.pass_mess} </div>
-				<input type="submit" className="sub" value="Send" />
-			</form>
-		</div>
+		if window.oauth is "true"
+			<div className="logout_wrapper">
+				<form action='#' id="logout_form" onSubmit={@onLogout}>
+					<input type="submit" className="sub" value="Logout" />
+				</form>
+			</div>
+		else
+			<div className="login_wrapper">
+				<div className="error_wrapper"> {@state.error_mess} </div>
+				<form action='#' id="login_form" onSubmit={@onLogin}>
+					<input type="text" className="input_login" placeholder="login" valueLink={@linkState("login_field")} onBlur={@checkLogin} />
+					<div className="error_wrap_login"> {@state.login_mess} </div>
+					<input type="password" className="pass_login" placeholder="password" valueLink={@linkState("pass_field")} onBlur={@checkPass} />
+					<div className="error_wrap_pass"> {@state.pass_mess} </div>
+					<input type="submit" className="sub" value="Login" />
+				</form>
+			</div>
 
 React.render <Login />, document.getElementById('body')

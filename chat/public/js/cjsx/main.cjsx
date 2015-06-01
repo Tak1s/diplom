@@ -13,7 +13,7 @@ MainComponent = React.createClass
 					<MessageModule />
 				</div>
 				<div className="side_bar_wrapp">
-				ggg
+					userId: {window.user}
 				</div>
 				<div className="cl"></div>
 			</div>

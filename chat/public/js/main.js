@@ -14,7 +14,7 @@ MainComponent = React.createClass({
       "className": "content_wrapp"
     }, React.createElement(MessageModule, null)), React.createElement("div", {
       "className": "side_bar_wrapp"
-    }, "\t\t\t\tggg"), React.createElement("div", {
+    }, "\t\t\t\t\tuserId: ", window.user), React.createElement("div", {
       "className": "cl"
     })));
   }

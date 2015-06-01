@@ -11,17 +11,16 @@ var mongoose = require('libs/mongoose')
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-//var routes = require('./routes/index');
-//var users = require('./routes/users');
 var HttpError = require('error').HttpError;
 
 var app = express();
 
+app.use(favicon(__dirname + '/public/img/favicon.ico'));
+
 app.engine('ejs', require('ejs-locals'));
 app.set('views', path.join(__dirname, 'tpl'));
-app.set('view engine', 'ejs');
 
-app.use(favicon(__dirname + '/public/img/favicon.ico'));
+app.set('view engine', 'ejs');
 
 if (app.get('env') === 'development') {
     app.use(logger('dev'));
@@ -29,7 +28,8 @@ if (app.get('env') === 'development') {
     app.use(logger('combined'));
 }
 
-app.use(bodyParser.json());
+app.use( bodyParser.json() );
+app.use( bodyParser.urlencoded({extended: false}) );
 
 app.use(cookieParser());
 
@@ -45,6 +45,7 @@ app.use(session({
 }));
 
 app.use(require('middleware/sendHttpError'));
+app.use(require('middleware/loadingUser'));
 
 require('routes')(app);
 

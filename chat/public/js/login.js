@@ -13,7 +13,7 @@ Login = React.createClass({
       error_mess: ''
     };
   },
-  sendMethod: function(url, data) {
+  sendMethod: function(url, data, callback) {
     var self;
     self = this;
     return $.ajax({
@@ -21,13 +21,7 @@ Login = React.createClass({
       type: "POST",
       data: data,
       success: function(res, stat) {
-        if (res.error === 'no') {
-
-        } else {
-          return self.setState({
-            error_mess: res.error_mess
-          });
-        }
+        return callback(res);
       },
       error: function(res, stat) {
         return self.setState({
@@ -67,8 +61,9 @@ Login = React.createClass({
     });
     return chk;
   },
-  onSubmit: function() {
+  onLogin: function(el) {
     var login_chk, pass_chk;
+    el.preventDefault();
     this.setState({
       error_mess: ''
     });
@@ -78,39 +73,77 @@ Login = React.createClass({
       return this.sendMethod('/login', {
         username: this.state.login_field,
         password: this.state.pass_field
-      });
+      }, (function(_this) {
+        return function(res) {
+          if (res.error === 'no') {
+            return window.location.href = '/chat';
+          } else {
+            return self.setState({
+              error_mess: res.error_mess
+            });
+          }
+        };
+      })(this));
     }
   },
+  onLogout: function(el) {
+    el.preventDefault();
+    return this.sendMethod('/logout', {}, (function(_this) {
+      return function(res) {
+        if (res.error === 'no') {
+          return window.location.href = '/';
+        } else {
+          return self.setState({
+            error_mess: res.error_mess
+          });
+        }
+      };
+    })(this));
+  },
   render: function() {
-    return React.createElement("div", {
-      "className": "login_wrapper"
-    }, React.createElement("div", {
-      "className": "error_wrapper"
-    }, " ", this.state.error_mess, " "), React.createElement("form", {
-      "action": '#',
-      "id": "login_form",
-      "onSubmit": this.onSubmit
-    }, React.createElement("input", {
-      "type": "text",
-      "className": "input_login",
-      "placeholder": "login",
-      "valueLink": this.linkState("login_field"),
-      "onBlur": this.checkLogin
-    }), React.createElement("div", {
-      "className": "error_wrap_login"
-    }, " ", this.state.login_mess, " "), React.createElement("input", {
-      "type": "password",
-      "className": "pass_login",
-      "placeholder": "password",
-      "valueLink": this.linkState("pass_field"),
-      "onBlur": this.checkPass
-    }), React.createElement("div", {
-      "className": "error_wrap_pass"
-    }, " ", this.state.pass_mess, " "), React.createElement("input", {
-      "type": "submit",
-      "className": "sub",
-      "value": "Send"
-    })));
+    if (window.oauth === "true") {
+      return React.createElement("div", {
+        "className": "logout_wrapper"
+      }, React.createElement("form", {
+        "action": '#',
+        "id": "logout_form",
+        "onSubmit": this.onLogout
+      }, React.createElement("input", {
+        "type": "submit",
+        "className": "sub",
+        "value": "Logout"
+      })));
+    } else {
+      return React.createElement("div", {
+        "className": "login_wrapper"
+      }, React.createElement("div", {
+        "className": "error_wrapper"
+      }, " ", this.state.error_mess, " "), React.createElement("form", {
+        "action": '#',
+        "id": "login_form",
+        "onSubmit": this.onLogin
+      }, React.createElement("input", {
+        "type": "text",
+        "className": "input_login",
+        "placeholder": "login",
+        "valueLink": this.linkState("login_field"),
+        "onBlur": this.checkLogin
+      }), React.createElement("div", {
+        "className": "error_wrap_login"
+      }, " ", this.state.login_mess, " "), React.createElement("input", {
+        "type": "password",
+        "className": "pass_login",
+        "placeholder": "password",
+        "valueLink": this.linkState("pass_field"),
+        "onBlur": this.checkPass
+      }), React.createElement("div", {
+        "className": "error_wrap_pass"
+      }, " ", this.state.pass_mess, " "), React.createElement("input", {
+        "type": "submit",
+        "className": "sub",
+        "value": "Login"
+      })));
+    }
   }
 });
 

@@ -17,6 +17,14 @@
     <!-- <script type="text/javascript" src="js/dist/reflux.min.js"></script> -->
     <script type="text/javascript" src="js/mess/mess_store.js"></script>
     <script type="text/javascript" src="js/mess/mess_component.js"></script>
+    <script>
+        <%if(user){%>
+            window.user = '<%=user.username%>';
+        <%}else{%>
+            window.user = null;
+        <%}%>
+        window.oauth = '<%=oauth%>';
+    </script>
 </head>
 <!--<body>-->
 <!--<header>-->
