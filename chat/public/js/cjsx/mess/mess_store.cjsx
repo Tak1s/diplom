@@ -24,6 +24,9 @@ window.StoreMess = Reflux.createStore
 				console.log "user_join_LOG: ", username
 			.on 'leave', (username)->
 				console.log "user_leave_LOG: ", username
+			.on 'logout', (username)->
+				console.log "user_logout_LOG: ", username
+				window.location.href = '/'
 			.on 'connect', ()->
 				console.log "connect_LOG: ", "connect"
 			.on 'disconnect', ()->

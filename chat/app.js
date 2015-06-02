@@ -73,6 +73,6 @@ var server =  http.createServer(app).listen(config.get('port'), function(){
     log.info('Express server listing on port ' + config.get('port'));
 })
 
-require('./socket')(server);
-
+var io = require('./socket')(server);
+app.set('io', io);
 //module.exports = app;

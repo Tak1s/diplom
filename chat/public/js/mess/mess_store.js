@@ -20,6 +20,9 @@ window.StoreMess = Reflux.createStore({
       return console.log("user_join_LOG: ", username);
     }).on('leave', function(username) {
       return console.log("user_leave_LOG: ", username);
+    }).on('logout', function(username) {
+      console.log("user_logout_LOG: ", username);
+      return window.location.href = '/';
     }).on('connect', function() {
       return console.log("connect_LOG: ", "connect");
     }).on('disconnect', function() {

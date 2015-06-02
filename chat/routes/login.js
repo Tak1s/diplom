@@ -11,7 +11,7 @@ exports.post = function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
 
-    User.authorize(username, password, function(err, user){
+    User.authorize(username, password, function(err, user, next){
         if(err) {
             if (err instanceof AuthError) {
                 return next(new HttpError(403, err.message));
