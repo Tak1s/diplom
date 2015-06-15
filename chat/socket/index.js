@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var sessionStore = require('libs/sessionStore');
 var HttpError = require('error').HttpError;
 var User = require('models/user').User;
+var Mess = require('models/message').Message;
 
 function LoadSession (sid, callback){
     sessionStore.load(sid, function(err, session){
@@ -19,8 +20,7 @@ function LoadSession (sid, callback){
     });
 }
 
-function LoadUser (session, callback) {
-
+function LoadUserChat (session, callback) {
 
     if(!session.user){
         log.debug("Session %s is anonymous", session.id);
@@ -35,7 +35,8 @@ function LoadUser (session, callback) {
             return callback(null, null);
         }
         log.debug("user findById result: ", + user);
-        callback(null, user);
+
+        callback(null, {user:user, chat_id:session.chat});
     });
 
 }
@@ -47,43 +48,6 @@ module.exports = function(server) {
     io.set('origins', 'localhost:*')
     io.set('logger', log);
 
-    //io.set('authorization', function(handshake, callback){
-    //    async.waterfall([
-    //        function(callback){
-    //            handshake.cookies = cookie.parse(handshake.headers.cookie || '');
-    //            var sidCookie = handshake.cookies[config.get('session:key')];
-    //            var sid = cookieParser.signedCookie(sidCookie, config.get("session:secret"));
-    //            //var sid = connect.utils.parseSignedCookie(sidCookie, config.get("session:secret"));
-    //
-    //            LoadSession(sid, callback);
-    //        },
-    //        function(session, callback){
-    //            if (!session){
-    //                callback(new HttpError(401, "No session"));
-    //            }
-    //
-    //            handshake.session = session;
-    //            LoadUser(session, callback);
-    //        },
-    //        function(user, callback){
-    //
-    //            if(!user){
-    //                callback(new HttpError(403, "Anonymous session may not connect"));
-    //            }
-    //
-    //            handshake.user = user;
-    //            callback(null);
-    //        }
-    //    ],function(err){
-    //        if(!err){
-    //            return callback(null, true);
-    //        }
-    //        if (err instanceof HttpError){
-    //            return callback(null, false);
-    //        }
-    //        callback(err);
-    //    });
-    //});
     io.use(function (socket, next) {
         var handshakeData = socket.request;
 
@@ -105,15 +69,15 @@ module.exports = function(server) {
                 }
 
                 socket.handshake.session = session;
-                LoadUser(session, callback);
+                LoadUserChat(session, callback);
             },
-            function (user, callback) {
-                if (!user) {
+            function (data, callback) {
+                if (!data.user) {
                     return callback(new HttpError(403, "Anonymous session may not connect"));
                 }
-                callback(null, user);
+                callback(null, data);
             }
-        ], function (err, user) {
+        ], function (err, data) {
 
             if (err) {
                 if (err instanceof HttpError) {
@@ -122,7 +86,8 @@ module.exports = function(server) {
                 next(err);
             }
 
-            socket.handshake.user = user;
+            socket.handshake.user = data.user;
+            socket.handshake.chat_id = data.chat_id;
             next();
 
         });
@@ -132,7 +97,6 @@ module.exports = function(server) {
     io.sockets.on('session:reload', function(sid){
         console.log('sid',sid);
         var clients = io.sockets.clients();
-        console.log('clients',clients);
         clients.forEach(function(){
             if(client.handshake.session.id != sid) return;
 
@@ -160,12 +124,41 @@ module.exports = function(server) {
         socket.join(userRoom);
 
         var username = socket.handshake.user.get('username');
+        var chat_id = socket.handshake.chat_id;
 
         socket.broadcast.emit('join',username);
 
         socket.on('message', function (text, cb) {
-            socket.broadcast.emit('message', username, text);
-            cb && cb({code:'ok'});
+            Mess.saveMess(chat_id, text, function(err, mess){
+                if (err) return(err);
+                var bot_mess = {
+                    dt: new Date(),
+                    bot:true,
+                    name: "Operator",
+                    body: "Test text"
+                }
+                Mess.saveMess(chat_id, bot_mess, function(err, bot_mess){
+                    if (err) return(err);
+                    var _mess ={
+                        dt: bot_mess.dt,
+                        bot:bot_mess.bot,
+                        name: "Operator",
+                        body: bot_mess.body
+                    }
+                    socket.emit('message', username, _mess);
+                    cb && cb({code:'ok'});
+                });
+            });
+
+            //var bot_mess = {
+            //    dt: new Date(),
+            //    bot:true,
+            //    name: "Operator",
+            //    body: "Test text"
+            //}
+            //
+            //socket.emit('message', username, bot_mess);
+            //cb && cb({code:'ok'});
         });
 
         socket.on('disconnect', function(){

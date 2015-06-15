@@ -35,7 +35,7 @@ Login = React.createClass
 			mess = ''
 		else
 			chk = false
-			mess = 'Minimum length – 4 characters'
+			mess = 'Минимум - 4 символа'
 		@setState({login_chk: chk, login_mess:mess})
 		chk
 
@@ -47,7 +47,7 @@ Login = React.createClass
 			mess = ''
 		else
 			chk = false
-			mess = 'Enter a password. Allowed characters are A-Z, a-z, 0-9, _. Minimum length – 6 characters; Maximum length – 14 characters.'
+			mess = 'Введите пароль. Допустимые символы: A-Z, a-z, 0-9, _. Минимум - 6 символов, максимум – 14.'
 		@setState({pass_chk: chk, pass_mess:mess})
 		chk
 
@@ -77,22 +77,31 @@ Login = React.createClass
 		)
 
 	render:->
-		if window.oauth is "true"
+		if window.config.oauth is true
 			<div className="logout_wrapper">
 				<form action='#' id="logout_form" onSubmit={@onLogout}>
 					<input type="submit" className="sub" value="Logout" />
 				</form>
 			</div>
 		else
-			<div className="login_wrapper">
-				<div className="error_wrapper"> {@state.error_mess} </div>
-				<form action='#' id="login_form" onSubmit={@onLogin}>
-					<input type="text" className="input_login" placeholder="login" valueLink={@linkState("login_field")} onBlur={@checkLogin} />
-					<div className="error_wrap_login"> {@state.login_mess} </div>
-					<input type="password" className="pass_login" placeholder="password" valueLink={@linkState("pass_field")} onBlur={@checkPass} />
-					<div className="error_wrap_pass"> {@state.pass_mess} </div>
-					<input type="submit" className="sub" value="Login" />
-				</form>
+			<div className="login_wr well well-lg">
+				<div className="login_wrapper">
+					<div className='login_head'>
+						<p>РЕГИСТРАЦИЯ</p>
+						<p>-И-</p>
+						<p>ВХОД</p>
+					</div>
+					<form action='#' id="login_form" onSubmit={@onLogin}>
+						<div className="inputs">
+							<input type="text" className="input_login form-control floating-label" placeholder="Логин" valueLink={@linkState("login_field")} onBlur={@checkLogin} />
+							<div className="error_wrap_login"> {@state.login_mess} </div>
+							<input type="password" className="pass_login form-control floating-label" placeholder="Пароль" valueLink={@linkState("pass_field")} onBlur={@checkPass} />
+							<div className="error_wrap_pass"> {@state.pass_mess} </div>
+						</div>
+						<input type="submit" className="sub btn btn-primary" value="Войти" />
+					</form>
+					<div className="error_wrapper"> {@state.error_mess} </div>
+				</div>
 			</div>
 
-React.render <Login />, document.getElementById('body')
+React.render <Login />, document.getElementById('side_bar_wrapp')

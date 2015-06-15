@@ -1,57 +1,10 @@
-/*html, body {
-  height: 100%;
-  /*position: relative;
-  width: 100%;
-}
-
-.wrapper {
-  min-height: 100%;
-  position: relative;
-  max-width: 1024px;
-  margin: 0 auto;
-}
-
-.wrapp_container {
-  height: 100%;
-  width: 100%;
-}
-
-.content_wrapp {
-  float: left;
-  height: 100%;
-  position: relative;
-  width: 70%;
-}
-
-.side_bar_wrapp {
-  height: 100%;
-  position: relative;
-  width: 29%;
-  float: left;
-}
-
-.mess_modul {
-  width: 100%;
-  height: 100%;
-}
-
-.mess_wrapper {
-  height: 100%;
-  width: 100%;
-  position: relative;
-  padding-bottom: 150px;
-}
-
-.form_wrapper {
-  bottom: 0;
-  height: 150px;
-  left: 0;
-  position: absolute;
-  width: 100%;
-}*/
 
 html, body {
   height: 100%;
+}
+
+textarea {
+  resize:none;
 }
 
 .wrapper {
@@ -66,11 +19,19 @@ html, body {
   width: 100%;
 }
 
-.content_wrapp {
+#content_wrapp {
   float: left;
   height: 100%;
   position: relative;
   width: 70%;
+}
+
+#side_bar_wrapp {
+  float: left;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  width: 300px;
 }
 
 .mess_modul {
@@ -80,30 +41,41 @@ html, body {
 
 .form_wrapper {
   bottom: 0;
-  height: 120px;
+  height: 85px;
   left: 0;
   position: absolute;
   width: 100%;
 }
 
 .mess_wrapper {
-  bottom: 120px;
+  bottom: 85px;
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
 }
 
-.mess_item.user {
+.hist_wrapper, .train_wrapper {
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.mess_item.false {
   background-color: rgba(9, 56, 194, 0.16);
   border-top: 2px solid #0938c2;
   box-shadow: 0 0 30px 11px #fff inset;
   margin-top: 5px;
 }
 
-.mess_item.bot {
+.mess_item.true {
   background-color: rgba(194, 9, 9, 0.16);
   border-top: 2px solid #c20909;
   box-shadow: 0 0 30px 11px #fff inset;
@@ -116,7 +88,103 @@ html, body {
 
 .timeSend {
   position: absolute;
-  right: 2%;
-  width: 60px;
+  right: 1%;
+  width: 55px;
 }
 
+.login_wrapper {
+    text-align: center;
+    width: 100%;
+}
+
+.logout_wrapper{
+  text-align: right;
+}
+
+.logout_wrapper p {
+  float: left;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.name_lable {
+  color: #009688;
+  font-weight: 500;
+}
+
+.uname {
+  border-bottom: 1px solid #009688;
+  color: #009688;
+}
+
+.menu_wrapp ul {
+  width: 100%;
+}
+
+.menu_wrapp {
+  padding: 0;
+}
+
+.menu_wrapp ul {
+  width: 100%;
+}
+
+.menu_wrapp li {
+  text-align: center;
+  width: 33%;
+}
+
+.menu.panel-body {
+  padding: 0;
+}
+
+.menu.panel-body .navbar {
+  margin-bottom: 0;
+}
+
+.menu.panel-heading {
+  padding: 0 0 0 15px;
+}
+
+#content_wrapp .well.well-sm {
+  height: 100%;
+  margin-bottom: 0;
+}
+
+.mess_body {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.mess_item.false .uName {
+  border-bottom: 1px solid #0938c2;
+  color: #0938c2;
+}
+
+.mess_item.false .timeSend {
+  border-bottom: 1px solid #0938c2;
+  color: #0938c2;
+}
+
+.mess_item.true .uName {
+  border-bottom: 1px solid #c20909;
+  color: #c20909;
+}
+
+.mess_item.true .timeSend {
+  border-bottom: 1px solid #c20909;
+  color: #c20909;
+}
+
+.error_wrap_login {
+  height: 20px;
+}
+
+.new_tag.form-horizontal {
+  padding: 40px 20px 0;
+  width: 100%;
+}
+
+.train_wrapper {
+  padding: 40px 0 0;
+}

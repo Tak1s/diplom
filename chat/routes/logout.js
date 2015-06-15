@@ -1,8 +1,10 @@
 exports.post = function(req,res, next){
     var sid = req.session.id;
     var io = req.app.get("io");
-    var userRoom = "user:room:" + req.user.username;
+    var userRoom = "user:room:" + req.client_config.user.name;
+    console.log("vvvv", userRoom)
     var connectedSockets = io.of('/').in(userRoom).connected;
+
     //req.session.destroy();
     req.session.destroy(function(err){
         Object.keys(connectedSockets).forEach(function (socketId) {
@@ -17,6 +19,5 @@ exports.post = function(req,res, next){
         if(err) return next(err);
         res.json({error:'no'});
     });
-
 
 }

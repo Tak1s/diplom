@@ -31,20 +31,21 @@ MessageViewForm = React.createClass({
       }
     });
   },
-  viewMessList: function(obj) {
-    if (!_.isEmpty(obj)) {
-      return _.map(obj, function(obj, key) {
+  componentDidMount: function() {},
+  viewMessList: function(_obj) {
+    if (!_.isEmpty(_obj)) {
+      return _.map(_obj, function(obj, key) {
         return React.createElement("li", {
           "key": key
         }, React.createElement("div", {
-          "className": "mess_item " + obj.user
+          "className": "mess_item " + obj.bot
         }, React.createElement("div", {
           "className": "mess_head"
         }, React.createElement("span", {
           "className": "uName"
         }, obj.name), React.createElement("span", {
           "className": "timeSend"
-        }, moment(obj.dt_send).format('HH:mm:ss'))), React.createElement("div", {
+        }, moment(obj.dt).format('HH:mm:ss'))), React.createElement("div", {
           "className": "mess_body"
         }, obj.body)));
       });
@@ -52,7 +53,8 @@ MessageViewForm = React.createClass({
   },
   render: function() {
     return React.createElement("div", {
-      "className": "mess_wrapper"
+      "className": "mess_wrapper",
+      "data-mcs-theme": "dark"
     }, React.createElement("ul", null, this.viewMessList(this.state.message)));
   }
 });
@@ -85,19 +87,19 @@ MessageSendForm = React.createClass({
     }, React.createElement("div", {
       "className": "form-group"
     }, React.createElement("div", {
-      "className": "col-sm-10"
+      "className": "col-sm-9"
     }, React.createElement("textarea", {
       "id": "mess_body",
       "className": "form-control",
       "ref": "messBody",
-      "rows": "3",
+      "rows": "2",
       "valueLink": this.linkState("mess_field"),
       "autoFocus": true,
-      "placeholder": "Message"
+      "placeholder": "Сообщение"
     }))), React.createElement("button", {
       "type": "submit",
-      "className": "btn btn-default"
-    }, "Submit")));
+      "className": "btn btn-primary"
+    }, "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c")));
   }
 });
 
@@ -109,7 +111,11 @@ MessageModule = React.createClass({
   },
   render: function() {
     return React.createElement("div", {
+      "className": "well well-sm"
+    }, React.createElement("div", {
       "className": "mess_modul"
-    }, React.createElement(MessageViewForm, null), React.createElement(MessageSendForm, null));
+    }, React.createElement(MessageViewForm, null), React.createElement(MessageSendForm, null)));
   }
 });
+
+React.render(React.createElement(MessageModule, null), document.getElementById('content_wrapp'));

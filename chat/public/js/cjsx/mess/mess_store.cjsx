@@ -9,7 +9,7 @@ window.StoreMess = Reflux.createStore
 
 	init: ->
 		self = @
-		@uName='Tak1s'
+		@uName= window.config.user.name
 		@message=[]
 
 		@socket = io.connect('',{
@@ -18,6 +18,7 @@ window.StoreMess = Reflux.createStore
 
 		@socket
 			.on 'message', (username, new_mess)->
+				console.log 'bbbb', new_mess
 				self.message.push(new_mess)
 				self.trigger('new_mess');
 			.on 'join', (username)->
@@ -36,7 +37,6 @@ window.StoreMess = Reflux.createStore
 				, 500
 
 
-
 	reconnect:->
 		self = @
 		@socket.once 'error', ->
@@ -50,14 +50,18 @@ window.StoreMess = Reflux.createStore
 		@message
 
 	onSendMess:(mess_body)->
+		self = @
 		console.log "mess_body", mess_body
 		new_mess = {
-			dt_send: new Date()
-			user:"user"
+			dt: new Date()
+			bot:false
 			name: @uName
 			body: mess_body
 		}
+		@message.push(new_mess)
+		
 		@socket.emit('message', new_mess, (data)->
+			self.trigger('new_mess')
 			console.log "res: ", data
 		)
 		# @message.push(new_mess)

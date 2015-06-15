@@ -8,12 +8,13 @@ window.StoreMess = Reflux.createStore({
   init: function() {
     var self;
     self = this;
-    this.uName = 'Tak1s';
+    this.uName = window.config.user.name;
     this.message = [];
     this.socket = io.connect('', {
       reconnect: false
     });
     return this.socket.on('message', function(username, new_mess) {
+      console.log('bbbb', new_mess);
       self.message.push(new_mess);
       return self.trigger('new_mess');
     }).on('join', function(username) {
@@ -46,15 +47,18 @@ window.StoreMess = Reflux.createStore({
     return this.message;
   },
   onSendMess: function(mess_body) {
-    var new_mess;
+    var new_mess, self;
+    self = this;
     console.log("mess_body", mess_body);
     new_mess = {
-      dt_send: new Date(),
-      user: "user",
+      dt: new Date(),
+      bot: false,
       name: this.uName,
       body: mess_body
     };
+    this.message.push(new_mess);
     return this.socket.emit('message', new_mess, function(data) {
+      self.trigger('new_mess');
       return console.log("res: ", data);
     });
   }

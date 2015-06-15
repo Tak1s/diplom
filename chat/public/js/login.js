@@ -37,7 +37,7 @@ Login = React.createClass({
       mess = '';
     } else {
       chk = false;
-      mess = 'Minimum length – 4 characters';
+      mess = 'Минимум - 4 символа';
     }
     this.setState({
       login_chk: chk,
@@ -53,7 +53,7 @@ Login = React.createClass({
       mess = '';
     } else {
       chk = false;
-      mess = 'Enter a password. Allowed characters are A-Z, a-z, 0-9, _. Minimum length – 6 characters; Maximum length – 14 characters.';
+      mess = 'Введите пароль. Допустимые символы: A-Z, a-z, 0-9, _. Минимум - 6 символов, максимум – 14.';
     }
     this.setState({
       pass_chk: chk,
@@ -101,7 +101,7 @@ Login = React.createClass({
     })(this));
   },
   render: function() {
-    if (window.oauth === "true") {
+    if (window.config.oauth === true) {
       return React.createElement("div", {
         "className": "logout_wrapper"
       }, React.createElement("form", {
@@ -115,36 +115,42 @@ Login = React.createClass({
       })));
     } else {
       return React.createElement("div", {
+        "className": "login_wr well well-lg"
+      }, React.createElement("div", {
         "className": "login_wrapper"
       }, React.createElement("div", {
-        "className": "error_wrapper"
-      }, " ", this.state.error_mess, " "), React.createElement("form", {
+        "className": 'login_head'
+      }, React.createElement("p", null, "\u0420\u0415\u0413\u0418\u0421\u0422\u0420\u0410\u0426\u0418\u042f"), React.createElement("p", null, "-\u0418-"), React.createElement("p", null, "\u0412\u0425\u041e\u0414")), React.createElement("form", {
         "action": '#',
         "id": "login_form",
         "onSubmit": this.onLogin
+      }, React.createElement("div", {
+        "className": "inputs"
       }, React.createElement("input", {
         "type": "text",
-        "className": "input_login",
-        "placeholder": "login",
+        "className": "input_login form-control floating-label",
+        "placeholder": "Логин",
         "valueLink": this.linkState("login_field"),
         "onBlur": this.checkLogin
       }), React.createElement("div", {
         "className": "error_wrap_login"
       }, " ", this.state.login_mess, " "), React.createElement("input", {
         "type": "password",
-        "className": "pass_login",
-        "placeholder": "password",
+        "className": "pass_login form-control floating-label",
+        "placeholder": "Пароль",
         "valueLink": this.linkState("pass_field"),
         "onBlur": this.checkPass
       }), React.createElement("div", {
         "className": "error_wrap_pass"
-      }, " ", this.state.pass_mess, " "), React.createElement("input", {
+      }, " ", this.state.pass_mess, " ")), React.createElement("input", {
         "type": "submit",
-        "className": "sub",
-        "value": "Login"
-      })));
+        "className": "sub btn btn-primary",
+        "value": "Войти"
+      })), React.createElement("div", {
+        "className": "error_wrapper"
+      }, " ", this.state.error_mess, " ")));
     }
   }
 });
 
-React.render(React.createElement(Login, null), document.getElementById('body'));
+React.render(React.createElement(Login, null), document.getElementById('side_bar_wrapp'));
