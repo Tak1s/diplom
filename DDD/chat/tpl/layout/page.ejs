@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%=blocks.title%></title>
+    <link href="vendor/bower_components/reset-css/reset.css" rel="stylesheet">
+    <link href="vendor/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/bower_components/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
+    <link href="vendor/bower_components/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+    <link href="vendor/bower_components/jquery-ui/themes/base/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <script type="text/javascript" src="vendor/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/lodash/lodash.min.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/moment/min/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="css/malihu-custom-scrollbar-plugin-master/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script type="text/javascript" src="js/dist/socket.io.js"></script>
+    <!--<script type="text/javascript" src="js/dist/socket.io-1.3.5.js"></script>-->
+    <!--<script type="text/javascript" src="vendor/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+    <script type="text/javascript" src="vendor/bower_components/bootstrap-material-design/dist/js/material.min.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/bootstrap-material-design/dist/js/ripples.min.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/react/react-with-addons.js"></script>
+    <script type="text/javascript" src="vendor/bower_components/reflux/dist/reflux.js"></script>
+
+    <script type="text/javascript" src="js/logout.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/nav_block.js"></script>
+    <script>
+        var config = <%if(client_config){%><%- JSON.stringify(client_config)%><%}else{%>null<%}%>;
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="wrapp_container">
+            <div id="content_wrapp"></div>
+            <div id="side_bar_wrapp"></div>
+            <div class="cl"></div>
+        </div>
+    </div>
+<%-body -%>
+    <script>
+        $.material.init();
+    </script>
+</body>
+</html>
